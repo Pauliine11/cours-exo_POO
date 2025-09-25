@@ -2,7 +2,6 @@
 
 abstract class Product4
 {
-    private const UNITE = "€";
     private string $title;
     private float $price;
     private int $quantity;
@@ -14,12 +13,25 @@ abstract class Product4
         $this->quantity = $quantity;
     }
 
-    public function displayProduct()
+    public function calculTotal()
     {
-        return "<p>L'article $this->title est au prix de $this->price ". self::UNITE . " et il reste en stock $this->quantity articles</p>";  
-        
+        if (self::verifValeur($this->quantity, $this->price)) {
+            return $this->quantity * $this->price;
+        } else {
+            return "L'une des valeurs n'est pas bonne!";
+        }
     }
 
+    static function verifValeur($quantity, $price)
+    {
+        if (($quantity > 0) && ($price > 0)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //Les SET
     public function setTitle(string $title)
     {
         $this->title = $title;
@@ -38,6 +50,8 @@ abstract class Product4
         return $this;
     }
 
+    //LES GET
+
     public function getTitle()
     {
         return $this->title;
@@ -52,30 +66,50 @@ abstract class Product4
     {
         return $this->quantity;
     }
-
 }
 
 class Meuble extends Product4
 {
-    public function color()
+    private string $couleur;
+
+    public function setCouleur(string $value)
     {
-        return "<p>Red</p>";
+        $this->couleur = $value;
+        return $this;
+    }
+    public function getCouleur()
+    {
+        return $this->couleur;
     }
 }
 
-class Vetements extends Product4
+class Vetement extends Product4
 {
-    public function size()
+    private string $taille;
+
+    public function setTaille($valeur)
     {
-        return "<p>L</p>";
+        $this->taille = $valeur;
+        return $this->taille;
+    }
+
+    public function getTaille()
+    {
+        return $this->taille;
     }
 }
 
-$table = new Meuble('Table ronde', 55, 4);
-$chemise = new Vetements('Chemise blanche', 75, 3);
+$commode = new Meuble('Commode', 65, 2);
+$commode->setCouleur('rose');
 
-echo $table->displayProduct();
-echo $table->color();
-echo $chemise->size();
-echo $chemise->displayProduct();
+echo "<pre>";
+var_dump($commode);
+echo "</pre>";
 
+
+$robe = new Vetement('Robe', 120, 1);
+$robe->setTaille('s');
+
+echo "<pre>";
+var_dump($robe);
+echo "</pre>";
